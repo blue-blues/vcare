@@ -1,0 +1,86 @@
+{
+  "name": "hospital-management-system",
+  "version": "1.0.0",
+  "description": "Enterprise-grade Hospital Management System with AI Integration",
+  "private": true,
+  "workspaces": [
+    "backend/services/*",
+    "backend/api-gateway",
+    "backend/shared",
+    "backend/ai-services/*",
+    "frontend/*"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "dev": "concurrently \"npm run dev:gateway\" \"npm run dev:services\" \"npm run dev:frontend\"",
+    "dev:gateway": "cd backend/api-gateway && npm run dev",
+    "dev:services": "npm run dev:auth & npm run dev:patient & npm run dev:doctor & npm run dev:appointment",
+    "dev:auth": "cd backend/services/auth-service && npm run dev",
+    "dev:patient": "cd backend/services/patient-service && npm run dev",
+    "dev:doctor": "cd backend/services/doctor-service && npm run dev",
+    "dev:appointment": "cd backend/services/appointment-service && npm run dev",
+    "dev:frontend": "cd frontend/patient-portal && npm run dev",
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "tsc -b backend/tsconfig.json",
+    "build:frontend": "cd frontend && npm run build",
+    "test": "jest --coverage",
+    "test:unit": "jest --testPathPattern=tests/unit",
+    "test:integration": "jest --testPathPattern=tests/integration",
+    "test:e2e": "jest --testPathPattern=tests/e2e",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "db:migrate": "cd database && node migrations/run.js",
+    "db:seed": "cd database && node seeds/run.js",
+    "db:reset": "npm run db:migrate && npm run db:seed",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-security": "^1.7.1",
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.1.0",
+    "prettier": "^3.1.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  },
+  "keywords": [
+    "hospital",
+    "healthcare",
+    "management",
+    "ai",
+    "medical",
+    "emr",
+    "ehr"
+  ],
+  "author": "Hospital Management System Team",
+  "license": "PROPRIETARY"
+}
